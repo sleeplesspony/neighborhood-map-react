@@ -1,21 +1,61 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Map from './Map'
 import './App.css';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+
+    state = {
+        locations: []
+    }
+
+    componentDidMount() {        
+        fetch('./data/locations.json', {  
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(function(response) {
+            return response.json();
+        }).then((response) => {
+            this.setState({ locations: response.locations });
+        }).catch(error => {
+            let defaultLocation = {
+                "id" : "53f88290498ef2ad1a6c8308",
+                "title" : "Bubba Gump Shrimp Co",
+                "lat" : 51.510339800134155,
+                "lng" : -0.13244546545923674
+            };
+            this.setState({ locations: [defaultLocation] });
+        });
+    }
+
+    onMapLoad = (map) => {
+        let markers = [];
+        let bounds = new window.google.maps.LatLngBounds();
+        for (let location of this.state.locations) {
+            let marker = new window.google.maps.Marker({
+                map: map,
+                position: location,            
+                title: location.title,
+                id: location.id
+            });
+            markers.push(marker);
+            bounds.extend(marker.position);
+        }
+        map.fitBounds(bounds);
+    }
+
+    render() {
+        return (
+            <div className="app">
+                <div className="main">
+                    <Map 
+                        center={this.state.locations[0]}
+                        onMapLoad={this.onMapLoad}
+                    />
+                </div>
+            </div>
+        );
+    }
 }
 
 export default App;
