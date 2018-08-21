@@ -28,7 +28,7 @@ class App extends Component {
         });
     }
 
-    onMarkerClick = (marker, map) => {
+    onMarkerClick = (marker, infoWindow, map) => {
         // Foursquare api data
         const foursquare = {
             'clientId' : 'RL15FUQLEH5FJ0FQ5F1OVLDKZZYQUZOFAQPXRAFR53IJENOK',
@@ -39,8 +39,7 @@ class App extends Component {
         //let url = `${foursquare.detailUrl}${marker.id}?client_id=${foursquare.clientId}&client_secret=${foursquare.clientSecret}&v=${foursquare.apiVersion}`;
 
         let url = `${foursquare.detailUrl}${marker.id}?v=${foursquare.apiVersion}`;
-
-        let infoWindow = new window.google.maps.InfoWindow();
+        
         if (infoWindow.marker != marker) {
             infoWindow.marker = marker;
             fetch(url).then((response) => {
@@ -85,6 +84,10 @@ class App extends Component {
     onMapLoad = (map) => {
         let markers = [];
         let bounds = new window.google.maps.LatLngBounds();
+        let infoWindow = new window.google.maps.InfoWindow();
+        infoWindow.addListener('closeclick', function() {
+          infoWindow.marker = null;
+        });
         for (let location of this.state.locations) {
             let marker = new window.google.maps.Marker({
                 map: map,
@@ -93,7 +96,7 @@ class App extends Component {
                 id: location.id
             });
             markers.push(marker);
-            marker.addListener('click', () => { this.onMarkerClick(marker, map); }); 
+            marker.addListener('click', () => { this.onMarkerClick(marker, infoWindow, map); }); 
             bounds.extend(marker.position);
         }
         map.fitBounds(bounds);
