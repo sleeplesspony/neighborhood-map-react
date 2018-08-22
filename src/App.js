@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import Map from './Map'
+import List from './List'
 import './App.css';
 
 class App extends Component {
 
     state = {
-        locations: []
+        locations: [],
+        markers: []
     }
 
     // get locations data from json and set state
@@ -101,12 +103,28 @@ class App extends Component {
         }
         if (this.state.locations.length) {
             map.fitBounds(bounds);
+            this.setState({markers});
+        }
+    }
+
+    // handler for clicks on items in locations list    
+    onListItemClick = (location) => {
+        for (let marker of this.state.markers) {
+            if (marker.id === location.id) {
+               new window.google.maps.event.trigger( marker, 'click' );
+            }
         }
     }
 
     render() {
         return (
             <div className="app">
+                <div className="sidebar">
+                    <List 
+                        onListItemClick={this.onListItemClick} 
+                        locations={this.state.locations}
+                    />
+                </div>
                 <div className="main">
                     <Map 
                         center={this.state.locations.length ? this.state.locations[0] : {"lat" : 51.510339800134155, "lng" : -0.13244546545923674}}
