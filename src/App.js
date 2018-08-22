@@ -131,8 +131,8 @@ class App extends Component {
         } else {
             activeLocations = this.state.locations;
         }
-        this.setState({activeLocations});
-        this.setState((state) => ({             
+        this.setState((state) => ({  
+            activeLocations: activeLocations,           
             markers: state.markers.map((marker) => {
                 let visible = false;
                 for(let location of activeLocations) {
