@@ -18,13 +18,8 @@ class App extends Component {
         }).then((response) => {
             this.setState({ locations: response.locations });
         }).catch(error => {
-            let defaultLocation = {
-                "id" : "53f88290498ef2ad1a6c8308",
-                "title" : "Bubba Gump Shrimp Co",
-                "lat" : 51.510339800134155,
-                "lng" : -0.13244546545923674
-            };
-            this.setState({ locations: [defaultLocation] });
+            console.log(error);
+            this.setState({locations: []});
         });
     }
 
@@ -99,7 +94,9 @@ class App extends Component {
             marker.addListener('click', () => { this.onMarkerClick(marker, infoWindow, map); }); 
             bounds.extend(marker.position);
         }
-        map.fitBounds(bounds);
+        if (this.state.locations.length) {
+            map.fitBounds(bounds);
+        }
     }
 
     render() {
@@ -107,7 +104,7 @@ class App extends Component {
             <div className="app">
                 <div className="main">
                     <Map 
-                        center={this.state.locations[0]}
+                        center={this.state.locations.length ? this.state.locations[0] : {"lat" : 51.510339800134155, "lng" : -0.13244546545923674}}
                         onMapLoad={this.onMapLoad}
                     />
                 </div>
