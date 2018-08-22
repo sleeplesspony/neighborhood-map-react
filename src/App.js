@@ -8,6 +8,7 @@ class App extends Component {
         locations: []
     }
 
+    // get locations data from json and set state
     componentDidMount() {        
         fetch('./data/locations.json', {  
             headers: {
@@ -23,6 +24,7 @@ class App extends Component {
         });
     }
 
+    // show infowidow with data from foursquare on marker click
     onMarkerClick = (marker, infoWindow, map) => {
         // Foursquare api data
         const foursquare = {
@@ -51,6 +53,7 @@ class App extends Component {
         }
     }
 
+    // set html string to set infowindow content
     getInfoWindowHtml(data) {
         let title = data.name;
         let link = data.canonicalUrl;
@@ -69,6 +72,7 @@ class App extends Component {
         return html;
     }
 
+     // set html string to set infowindow content if foursquare api error occures
     getErrorInfoWindowHtml(title) {
         return `<div class="infowindow-err">
             <h3>${title}</h3>
@@ -76,6 +80,7 @@ class App extends Component {
         </div>`;
     }
 
+    // set markers on map
     onMapLoad = (map) => {
         let markers = [];
         let bounds = new window.google.maps.LatLngBounds();

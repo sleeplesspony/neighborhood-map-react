@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 class Map extends Component {
 
+	// initialize map
 	initMap() {
 		const map = new window.google.maps.Map(
 			document.getElementById('map'),
