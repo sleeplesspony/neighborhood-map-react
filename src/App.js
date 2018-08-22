@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import Map from './Map'
 import List from './List'
+import escapeRegExp from 'escape-string-regexp'
 import './App.css';
 
 class App extends Component {
 
     state = {
         locations: [],
-        markers: []
+        markers: [],
+        query: '',
+        activeLocations: [],
+        map: null
     }
 
     // get locations data from json and set state
@@ -19,10 +23,10 @@ class App extends Component {
         }).then(function(response) {
             return response.json();
         }).then((response) => {
-            this.setState({ locations: response.locations });
+            this.setState({ locations: response.locations, activeLocations: response.locations });
         }).catch(error => {
             console.log(error);
-            this.setState({locations: []});
+            this.setState({locations: [], activeLocations: []});
         });
     }
 
@@ -39,7 +43,7 @@ class App extends Component {
 
         let url = `${foursquare.detailUrl}${marker.id}?v=${foursquare.apiVersion}`;
         
-        if (infoWindow.marker != marker) {
+        if (infoWindow.marker !== marker) {
             infoWindow.marker = marker;
             fetch(url).then((response) => {
                 return response.json();
@@ -84,13 +88,14 @@ class App extends Component {
 
     // set markers on map
     onMapLoad = (map) => {
+        this.setState({map});
         let markers = [];
         let bounds = new window.google.maps.LatLngBounds();
         let infoWindow = new window.google.maps.InfoWindow();
         infoWindow.addListener('closeclick', function() {
           infoWindow.marker = null;
         });
-        for (let location of this.state.locations) {
+        for (let location of this.state.activeLocations) {
             let marker = new window.google.maps.Marker({
                 map: map,
                 position: location,            
@@ -101,7 +106,7 @@ class App extends Component {
             marker.addListener('click', () => { this.onMarkerClick(marker, infoWindow, map); }); 
             bounds.extend(marker.position);
         }
-        if (this.state.locations.length) {
+        if (this.state.activeLocations.length) {
             map.fitBounds(bounds);
             this.setState({markers});
         }
@@ -116,18 +121,52 @@ class App extends Component {
         }
     }
 
+    updateQuery = (query) => {
+        this.setState({query});
+        query = query.trim();
+        let activeLocations;
+        if (query) {
+            const match = new RegExp(escapeRegExp(query), 'i')
+            activeLocations = this.state.locations.filter((location) => match.test(location.title))
+        } else {
+            activeLocations = this.state.locations;
+        }
+        this.setState({activeLocations});
+        this.setState((state) => ({             
+            markers: state.markers.map((marker) => {
+                let visible = false;
+                for(let location of activeLocations) {
+                    if (marker.id === location.id) {
+                        visible = true;
+                        break;
+                    }
+                }
+                if (visible) marker.setMap(this.state.map);
+                else marker.setMap(null);
+                return marker;
+            })
+        }))
+    }
+
     render() {
         return (
             <div className="app">
                 <div className="sidebar">
+                    <input 
+                        className="sidebar-filter"
+                        type="text" 
+                        placeholder="Search by title"
+                        value={this.state.query}
+                        onChange={(event) => this.updateQuery(event.target.value)}
+                    />
                     <List 
                         onListItemClick={this.onListItemClick} 
-                        locations={this.state.locations}
+                        locations={this.state.activeLocations}
                     />
                 </div>
                 <div className="main">
                     <Map 
-                        center={this.state.locations.length ? this.state.locations[0] : {"lat" : 51.510339800134155, "lng" : -0.13244546545923674}}
+                        center={this.state.activeLocations.length ? this.state.activeLocations[0] : {"lat" : 51.510339800134155, "lng" : -0.13244546545923674}}
                         onMapLoad={this.onMapLoad}
                     />
                 </div>
