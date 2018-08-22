@@ -7,21 +7,19 @@ class List extends Component {
 		const { locations, onListItemClick } = this.props
 		return (
 			<div>
-				{ locations.length && (
+				{ locations.length !== 0 && (
 					<ul className="sidebar-list">
 						{ locations.map((location) => ( 
 							<li 
 								key={location.id} 
 								className="sidebar-list-item" 
-								onClick={() => onListItemClick(location)}
-							>
+								onClick={() => onListItemClick(location)}>
 								{location.title}
 							</li>
 						))}
 					</ul>
 				)}
-
-				{locations.length <=0 && (
+				{!locations.length && (
 					<p>No results</p>
 				)}
 			</div>
