@@ -3,6 +3,7 @@ import Map from './Map'
 import List from './List'
 import escapeRegExp from 'escape-string-regexp'
 import './App.css';
+import Menu from './menu.svg';
 
 class App extends Component {
 
@@ -31,7 +32,7 @@ class App extends Component {
     }
 
     // show infowidow with data from foursquare on marker click
-    onMarkerClick = (marker, infoWindow, map) => {
+    onMarkerClick = (marker, infoWindow) => {
         // Foursquare api data
         const foursquare = {
             'clientId' : 'RL15FUQLEH5FJ0FQ5F1OVLDKZZYQUZOFAQPXRAFR53IJENOK',
@@ -54,7 +55,7 @@ class App extends Component {
                 return this.getErrorInfoWindowHtml(marker.title);
             }).then((html) => {
                 infoWindow.setContent(html);
-                infoWindow.open(map, marker);
+                infoWindow.open(this.state.map, marker); // not commited
             });
         }
     }
@@ -67,13 +68,13 @@ class App extends Component {
         let photoSrc = data.bestPhoto ? `${data.bestPhoto.prefix}200x150${data.bestPhoto.suffix}` : './data/img/location_no_photo.jpg';
         let hours = data.hours ? data.hours.status : ' no information';
         let rating = data.rating ? data.rating : 'no information';
-        let html = `<div>
+        let html = `<div class="infowindow-block">
             <h3>${title}</h3>
             <img class="infowindow-img" src="${photoSrc}" alt="${title}">
             <p>Address : ${address}</p>
             <p>Hours : ${hours}</p>
             <p>Rating : ${rating}</p>
-            <p><a href="${link}">More info</a></p>
+            <p><a href="${link}">More info on Foursquare</a></p>
         </div>`;
         return html;
     }
@@ -103,7 +104,7 @@ class App extends Component {
                 id: location.id
             });
             markers.push(marker);
-            marker.addListener('click', () => { this.onMarkerClick(marker, infoWindow, map); }); 
+            marker.addListener('click', () => { this.onMarkerClick(marker, infoWindow); }); 
             bounds.extend(marker.position);
         }
         if (this.state.activeLocations.length) {
@@ -151,20 +152,26 @@ class App extends Component {
     render() {
         return (
             <div className="app">
-                <div className="sidebar">
-                    <input 
-                        className="sidebar-filter"
-                        type="text" 
-                        placeholder="Search by title"
-                        value={this.state.query}
-                        onChange={(event) => this.updateQuery(event.target.value)}
-                    />
-                    <List 
-                        onListItemClick={this.onListItemClick} 
-                        locations={this.state.activeLocations}
-                    />
-                </div>
-                <div className="main">
+                <header className="app-header">
+                    <nav className="app-nav" >
+                        <img src={Menu} alt="Toggle menu" />
+                    </nav>
+                    <h1 className="app-title">London City restaurants</h1>
+                </header>
+                <div className="app-container">
+                    <div className="app-sidebar">
+                        <input 
+                            className="app-sidebar-filter"
+                            type="text" 
+                            placeholder="Search by title"
+                            value={this.state.query}
+                            onChange={(event) => this.updateQuery(event.target.value)}
+                        />
+                        <List 
+                            onListItemClick={this.onListItemClick} 
+                            locations={this.state.activeLocations}
+                        />
+                    </div>
                     <Map 
                         center={this.state.activeLocations.length ? this.state.activeLocations[0] : {"lat" : 51.510339800134155, "lng" : -0.13244546545923674}}
                         onMapLoad={this.onMapLoad}

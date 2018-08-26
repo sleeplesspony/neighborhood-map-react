@@ -6,13 +6,13 @@ class List extends Component {
 
 		const { locations, onListItemClick } = this.props
 		return (
-			<div>
+			<div className="app-sidebar-list-block">
 				{ locations.length !== 0 && (
-					<ul className="sidebar-list">
+					<ul className="app-sidebar-list">
 						{ locations.map((location) => ( 
 							<li 
 								key={location.id} 
-								className="sidebar-list-item" 
+								className="app-sidebar-list-item" 
 								onClick={() => onListItemClick(location)}>
 								{location.title}
 							</li>
