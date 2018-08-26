@@ -29,6 +29,36 @@
 			"title" : "Loch Fyne Seafood & Grill",
 			"lat" : 51.51244824086326,
 			"lng" : -0.11987491522397674
+		},
+		{
+			"id" : "4ebcee8582317d5cdad9e23a",
+			"title" : "GBK Restaurants HO",
+			"lat" : 51.519339499471734,
+			"lng" : -0.10045630591384579
+		},
+		{
+			"id" : "4bd5d6c2cfa7b713a38426da",
+			"title" : "El Pirata",
+			"lat" : 51.50509845814616,
+			"lng" : -0.14820610996251038
+		},
+		{
+			"id" : "562cd4f6498e153d3d2246d0",
+			"title" : "J.P. Restaurants Ltd",
+			"lat" : 51.52364730834961,
+			"lng" : -0.0978657603263855
+		},
+		{
+			"id" : "57c18126498e853207ce9bf3",
+			"title" : "Anchor",
+			"lat" : 51.5074672,
+			"lng" : -0.1304918
+		},
+		{
+			"id" : "516803b445b0b8bf1182fd81",
+			"title" : "Restaurant Story",
+			"lat" : 51.5028557909795,
+			"lng" : -0.0777757970657521
 		}
 	]
 }
