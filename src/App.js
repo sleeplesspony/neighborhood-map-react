@@ -12,7 +12,8 @@ class App extends Component {
         markers: [],
         query: '',
         activeLocations: [],
-        map: null
+        map: null,
+        visibleSideBar: false
     }
 
     // get locations data from json and set state
@@ -24,10 +25,10 @@ class App extends Component {
         }).then(function(response) {
             return response.json();
         }).then((response) => {
-            this.setState({ locations: response.locations, activeLocations: response.locations });
+            this.setState({ locations: response.locations, activeLocations: response.locations, visibleSideBar: !this.isMobile() });
         }).catch(error => {
             console.log(error);
-            this.setState({locations: [], activeLocations: []});
+            this.setState({locations: [], activeLocations: [], visibleSideBar: !this.isMobile()});
         });
     }
 
@@ -149,17 +150,41 @@ class App extends Component {
         }))
     }
 
+    toggleSideBar = () => {
+        this.setState((state) => ({
+            visibleSideBar: !state.visibleSideBar
+        }));
+    }
+
+    isMobile = () => {
+        console.log(window.innerWidth);
+        return window.innerWidth >= 500 ? false : true
+    }
+
+    hideSideBar = () => {
+        console.log(this.isMobile(), this.state.visibleSideBar);
+        if (this.state.visibleSideBar && this.isMobile()) {
+            this.toggleSideBar();
+        }
+    }
+
     render() {
+        let sideBarClassName = "app-sidebar";
+        let mapBlockClassName = "app-map-container"
+        if (!this.state.visibleSideBar) {
+            sideBarClassName += ' app-sidebar-hidden';
+            mapBlockClassName += ' app-map-container-full'
+        }
         return (
             <div className="app">
                 <header className="app-header">
-                    <nav className="app-nav" >
+                    <nav className="app-nav" onClick={this.toggleSideBar}>
                         <img src={Menu} alt="Toggle menu" />
                     </nav>
                     <h1 className="app-title">London City restaurants</h1>
                 </header>
                 <div className="app-container">
-                    <div className="app-sidebar">
+                    <div className={sideBarClassName} onClick={this.hideSideBar}>
                         <input 
                             className="app-sidebar-filter"
                             type="text" 
@@ -172,10 +197,13 @@ class App extends Component {
                             locations={this.state.activeLocations}
                         />
                     </div>
-                    <Map 
-                        center={this.state.activeLocations.length ? this.state.activeLocations[0] : {"lat" : 51.510339800134155, "lng" : -0.13244546545923674}}
-                        onMapLoad={this.onMapLoad}
-                    />
+                    <div className={mapBlockClassName}>
+                        <Map 
+                            center={this.state.activeLocations.length ? this.state.activeLocations[0] : {"lat" : 51.510339800134155, "lng" : -0.13244546545923674}}
+                            onMapLoad={this.onMapLoad}
+                        /> 
+                    </div>
+                   
                 </div>
             </div>
         );

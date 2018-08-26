@@ -37,8 +37,6 @@ html, body {
 
 .app-container {
     width: 100%;
-    display: flex;
-    flex-wrap: nowrap;
     height: calc(100vh - 44px);
 }
 
@@ -48,6 +46,15 @@ html, body {
     box-sizing: border-box;
     background: #f7f7f7;
     overflow-y: auto;
+    position: absolute;
+    top: 44px;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.app-sidebar.app-sidebar-hidden{
+    left: -240px;
 }
 
 .app-sidebar-filter {
@@ -80,9 +87,20 @@ html, body {
     color: #000;
 }
 
-.map-container {
+.app-map-container {
+    width: 100%;
     height: 100%;
-    width: calc(100% - 240px);
+    padding-left: 240px;
+    box-sizing: border-box;
+}
+
+.app-map-container-full {
+    padding-left: 0;
+}
+
+.map-container {
+    width: 100%;
+    height: 100%;
 }
 
 .infowindow-block {
