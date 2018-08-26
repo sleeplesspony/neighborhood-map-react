@@ -18,21 +18,25 @@ class Map extends Component {
 	}
 
 	componentDidMount() {
-		var script = document.createElement('script');
-		script.type = 'text/javascript';
-		script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBuOrUnYcOxswafAZifpSilhif4PyC3368&v3';
-		script.setAttribute('async', '')
-		script.setAttribute('defer', '')
-		document.body.appendChild(script);
+		if (!window.google) {
+			var script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBuOrUnYcOxswafAZifpSilhif4PyC3368&v3';
+			script.setAttribute('async', '')
+			script.setAttribute('defer', '')
+			document.body.appendChild(script);
 
-		script.addEventListener('load', event => {
-			this.initMap()
-		});
+			script.addEventListener('load', event => {
+				this.initMap()
+			});
 
-		script.addEventListener('error', () => {
-			let map = document.getElementById('map');
-			map.innerHTML = '<p>Error loading google maps. Please try later</p>';
-		});
+			script.addEventListener('error', () => {
+				let map = document.getElementById('map');
+				map.innerHTML = '<p>Error loading google maps. Please try later</p>';
+			});
+		} else {
+			this.initMap();
+		}
 	}
 
 	render() {
