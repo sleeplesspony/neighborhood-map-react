@@ -27,9 +27,16 @@ class App extends Component {
         }).then((response) => {
             this.setState({ locations: response.locations, activeLocations: response.locations, visibleSideBar: !this.isMobile() });
         }).catch(error => {
-            console.log(error);
             this.setState({locations: [], activeLocations: [], visibleSideBar: !this.isMobile()});
         });
+    }
+
+     toggleBounce = (marker) => {
+        if (marker.getAnimation() !== null) {
+            marker.setAnimation(null);
+        } else {
+            marker.setAnimation(window.google.maps.Animation.BOUNCE);
+        }
     }
 
     // show infowidow with data from foursquare on marker click
@@ -47,12 +54,18 @@ class App extends Component {
         
         if (infoWindow.marker !== marker) {
             infoWindow.marker = marker;
+            this.toggleBounce(marker);
+            if (marker.getAnimation() !== null) {
+              marker.setAnimation(null);
+            } else {
+              marker.setAnimation(window.google.maps.Animation.BOUNCE);
+            }
+
             fetch(url).then((response) => {
                 return response.json();
             }).then((data) => {
                 return this.getInfoWindowHtml(data.response.venue);
             }).catch((error) => {
-                console.log(error);
                 return this.getErrorInfoWindowHtml(marker.title);
             }).then((html) => {
                 infoWindow.setContent(html);
@@ -95,14 +108,15 @@ class App extends Component {
         let bounds = new window.google.maps.LatLngBounds();
         let infoWindow = new window.google.maps.InfoWindow();
         infoWindow.addListener('closeclick', function() {
-          infoWindow.marker = null;
+            infoWindow.marker = null;
         });
         for (let location of this.state.activeLocations) {
             let marker = new window.google.maps.Marker({
                 map: map,
                 position: location,            
                 title: location.title,
-                id: location.id
+                id: location.id,
+                animation: window.google.maps.Animation.DROP
             });
             markers.push(marker);
             marker.addListener('click', () => { this.onMarkerClick(marker, infoWindow); }); 
@@ -157,12 +171,10 @@ class App extends Component {
     }
 
     isMobile = () => {
-        console.log(window.innerWidth);
         return window.innerWidth >= 500 ? false : true
     }
 
     hideSideBar = () => {
-        console.log(this.isMobile(), this.state.visibleSideBar);
         if (this.state.visibleSideBar && this.isMobile()) {
             this.toggleSideBar();
         }
@@ -202,8 +214,7 @@ class App extends Component {
                             center={this.state.activeLocations.length ? this.state.activeLocations[0] : {"lat" : 51.510339800134155, "lng" : -0.13244546545923674}}
                             onMapLoad={this.onMapLoad}
                         /> 
-                    </div>
-                   
+                    </div>                   
                 </div>
             </div>
         );
