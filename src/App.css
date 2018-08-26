@@ -72,19 +72,29 @@ html, body {
     list-style: none;
     margin: 0 auto;
     padding: 0;
-    width: 200px;
-    font-size: 14px;
+    width: 200px;    
 }
 
 .app-sidebar-list-item {
-    padding: 10px;
-    cursor: pointer;
-    color: #3f4657;
-    border-bottom: 1px solid #d1d4d6;
+    padding: 0;
+    margin: 0;
 }
 
 .app-sidebar-list-item:hover {
     color: #000;
+}
+
+.app-sidebar-list-item button {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border: none;
+    margin: 0;
+    color: #3f4657;
+    border-bottom: 1px solid #d1d4d6;
+    background: #f7f7f7;
+    text-align: left;
+    cursor: pointer;
 }
 
 .app-map-container {

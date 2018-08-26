@@ -88,7 +88,8 @@ class App extends Component {
             <p>Address : ${address}</p>
             <p>Hours : ${hours}</p>
             <p>Rating : ${rating}</p>
-            <p><a href="${link}">More info on Foursquare</a></p>
+            <p><a href="${link}">More info ...</a></p>
+            <p>Location data from <a href="https://foursquare.com/">Foursquare</a></p>
         </div>`;
         return html;
     }

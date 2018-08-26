@@ -10,11 +10,10 @@ class List extends Component {
 				{ locations.length !== 0 && (
 					<ul className="app-sidebar-list">
 						{ locations.map((location) => ( 
-							<li 
-								key={location.id} 
-								className="app-sidebar-list-item" 
-								onClick={() => onListItemClick(location)}>
-								{location.title}
+							<li key={location.id} className="app-sidebar-list-item">
+								<button onClick={() => onListItemClick(location)}>
+									{location.title}
+								</button>
 							</li>
 						))}
 					</ul>
