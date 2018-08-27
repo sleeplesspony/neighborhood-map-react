@@ -6,7 +6,6 @@ The application built with React, Google Maps API and Forsquare API.
 ## Table of Contents
 
 * [Instructions](#instructions)
-* [Included tests suites](#tests)
 * [Dependencies](#dependencies)
 
 ## Instructions
