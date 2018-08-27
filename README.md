@@ -12,11 +12,22 @@ The application built with React, Google Maps API and Forsquare API.
 
 - To start the app download or clone the repository
 
-- In this folder run 'npm install'
+- In this folder run 'npm install' to install dependencies
 
-- After installation complete run 'npm start' to start server
+- After installation you can run app in developer mode or in build mode
 
-- With your server running, visit the site: `http://localhost:3000`
+  - For developer mode
+
+    - run 'npm start' to start server
+    - with your server running, visit the site: `http://localhost:3000`
+
+  - For build mode
+
+    - use 'npm run build' to create a production build
+    - after build folder is ready, serve it with static server. Use 'npm install -g serve' and 'serve -s build' after the static server is installed
+    - visit the site: `http://localhost:5000`
+
+    Notice: Service worker is available in production build only.
 
 ## Dependencies
 
