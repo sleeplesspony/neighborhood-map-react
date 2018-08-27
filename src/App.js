@@ -48,9 +48,7 @@ class App extends Component {
             'apiVersion' : '20180323',
             'detailUrl' : 'https://api.foursquare.com/v2/venues/'
         };
-        //let url = `${foursquare.detailUrl}${marker.id}?client_id=${foursquare.clientId}&client_secret=${foursquare.clientSecret}&v=${foursquare.apiVersion}`;
-
-        let url = `${foursquare.detailUrl}${marker.id}?v=${foursquare.apiVersion}`;
+        let url = `${foursquare.detailUrl}${marker.id}?client_id=${foursquare.clientId}&client_secret=${foursquare.clientSecret}&v=${foursquare.apiVersion}`;        
         
         if (infoWindow.marker !== marker) {
             infoWindow.marker = marker;
