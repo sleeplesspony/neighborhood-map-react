@@ -3,7 +3,6 @@ import Map from './Map'
 import List from './List'
 import escapeRegExp from 'escape-string-regexp'
 import './App.css';
-import Menu from './menu.svg';
 
 class App extends Component {
 
@@ -31,7 +30,8 @@ class App extends Component {
         });
     }
 
-     toggleBounce = (marker) => {
+    // toggle marker animation
+    toggleBounce = (marker) => {
         if (marker.getAnimation() !== null) {
             marker.setAnimation(null);
         } else {
@@ -69,7 +69,7 @@ class App extends Component {
                 return this.getErrorInfoWindowHtml(marker.title);
             }).then((html) => {
                 infoWindow.setContent(html);
-                infoWindow.open(this.state.map, marker); // not commited
+                infoWindow.open(this.state.map, marker); 
             });
         }
     }
@@ -82,13 +82,13 @@ class App extends Component {
         let photoSrc = data.bestPhoto ? `${data.bestPhoto.prefix}200x150${data.bestPhoto.suffix}` : './data/img/location_no_photo.jpg';
         let hours = data.hours ? data.hours.status : ' no information';
         let rating = data.rating ? data.rating : 'no information';
-        let html = `<div class="infowindow-block">
+        let html = `<div class="infowindow-block" aria-label="Info about ${title}">
             <h3>${title}</h3>
             <img class="infowindow-img" src="${photoSrc}" alt="${title}">
             <p>Address : ${address}</p>
             <p>Hours : ${hours}</p>
             <p>Rating : ${rating}</p>
-            <p><a href="${link}">More info ...</a></p>
+            <p><a href="${link}" aria-label="View Details for restaurant ${title}">View Details...</a></p>
             <p>Location data from <a href="https://foursquare.com/">Foursquare</a></p>
         </div>`;
         return html;
@@ -138,6 +138,7 @@ class App extends Component {
         }
     }
 
+    // handler for input query string changes
     updateQuery = (query) => {
         this.setState({query});
         query = query.trim();
@@ -165,6 +166,7 @@ class App extends Component {
         }))
     }
 
+    // toggle sidebar
     toggleSideBar = () => {
         this.setState((state) => ({
             visibleSideBar: !state.visibleSideBar
@@ -175,6 +177,7 @@ class App extends Component {
         return window.innerWidth >= 500 ? false : true
     }
 
+    // hide sidebar
     hideSideBar = () => {
         if (this.state.visibleSideBar && this.isMobile()) {
             this.toggleSideBar();
@@ -191,17 +194,20 @@ class App extends Component {
         return (
             <div className="app">
                 <header className="app-header">
-                    <nav className="app-nav" onClick={this.toggleSideBar}>
-                        <img src={Menu} alt="Toggle menu" />
-                    </nav>
+                    <button className="hamburger" type="button" aria-label="Toggle restaurants list" role="button" onClick={this.toggleSideBar}>
+                        <span className="hamburger-box">
+                            <span className="hamburger-inner"></span>
+                        </span> 
+                    </button>
                     <h1 className="app-title">London City restaurants</h1>
                 </header>
                 <div className="app-container">
-                    <div className={sideBarClassName} onClick={this.hideSideBar}>
+                    <div className={sideBarClassName} onClick={this.hideSideBar} aria-hidden={!this.state.visibleSideBar}>
                         <input 
                             className="app-sidebar-filter"
                             type="text" 
                             placeholder="Search by title"
+                            aria-label="Search restaurants by title"
                             value={this.state.query}
                             onChange={(event) => this.updateQuery(event.target.value)}
                         />
@@ -210,7 +216,7 @@ class App extends Component {
                             locations={this.state.activeLocations}
                         />
                     </div>
-                    <div className={mapBlockClassName}>
+                    <div className={mapBlockClassName} role="application" aria-label="Map of London City restaurants">
                         <Map 
                             center={this.state.activeLocations.length ? this.state.activeLocations[0] : {"lat" : 51.510339800134155, "lng" : -0.13244546545923674}}
                             onMapLoad={this.onMapLoad}

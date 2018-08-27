@@ -8,7 +8,7 @@ class List extends Component {
 		return (
 			<div className="app-sidebar-list-block">
 				{ locations.length !== 0 && (
-					<ul className="app-sidebar-list">
+					<ul className="app-sidebar-list" aria-label="Restaurants List">
 						{ locations.map((location) => ( 
 							<li key={location.id} className="app-sidebar-list-item">
 								<button onClick={() => onListItemClick(location)}>
@@ -19,7 +19,7 @@ class List extends Component {
 					</ul>
 				)}
 				{!locations.length && (
-					<p>No results</p>
+					<p className="app-sidebar-empty">No results</p>
 				)}
 			</div>
 		)

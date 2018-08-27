@@ -9,6 +9,7 @@ html, body {
     height: 100%;
     width: 100%;
 }
+
 .app-header {
     width: 100%;
     height: 44px;
@@ -20,29 +21,70 @@ html, body {
     flex-wrap: wrap;
 }
 
-.app-nav {
-    cursor: pointer;
-    padding: 10px 10px 10px 20px;
-    width: 24px;
-    height: 24px;
-    margin: 0;
-}
-
 .app-title {
     font-size: 24px;
     margin: 7px auto;
-    width: calc(100% - 54px);
+    width: calc(100% - 68px);
     text-align: center;
+}
+
+.hamburger {
+    padding: 0;
+    display: block;
+    cursor: pointer;
+    font: inherit;
+    text-transform: none;
+    background-color: transparent;
+    border: 0;
+    margin: 8px 8px 8px 20px;
+    overflow: visible; 
+}
+
+.hamburger:hover {
+    opacity: 0.7; 
+}
+
+.hamburger-box {
+    width: 40px;
+    height: 24px;
+    display: inline-block;
+    position: relative; 
+}
+
+.hamburger-inner {
+    display: block;
+    top: 50%;
+    margin-top: -2px; 
+}
+
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+    width: 40px;
+    height: 4px;
+    background-color: #fff;
+    border-radius: 4px;
+    position: absolute;
+}
+
+.hamburger-inner::before, .hamburger-inner::after {
+    content: "";
+    display: block; 
+}
+  
+.hamburger-inner::before {
+    top: -10px; 
+}
+
+.hamburger-inner::after {
+    bottom: -10px; 
 }
 
 .app-container {
     width: 100%;
-    height: calc(100vh - 44px);
+    height: calc(100% - 44px);
 }
 
 .app-sidebar {
     width: 240px;
-    height: 100%;
     box-sizing: border-box;
     background: #f7f7f7;
     overflow-y: auto;
@@ -51,10 +93,15 @@ html, body {
     bottom: 0;
     left: 0;
     z-index: 10;
+    display: block;
 }
 
-.app-sidebar.app-sidebar-hidden{
-    left: -240px;
+.app-sidebar-empty {
+    padding-left: 20px;
+}
+
+.app-sidebar.app-sidebar-hidden {
+    display: none;
 }
 
 .app-sidebar-filter {
