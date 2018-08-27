@@ -192,7 +192,7 @@ class App extends Component {
         return (
             <div className="app">
                 <header className="app-header">
-                    <button className="hamburger" type="button" aria-label="Toggle restaurants list" role="button" onClick={this.toggleSideBar}>
+                    <button className="hamburger" type="button" aria-label="Toggle restaurants list" onClick={this.toggleSideBar}>
                         <span className="hamburger-box">
                             <span className="hamburger-inner"></span>
                         </span> 
