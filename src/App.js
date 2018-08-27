@@ -177,9 +177,9 @@ class App extends Component {
         return window.innerWidth >= 500 ? false : true
     }
 
-    // hide sidebar
-    hideSideBar = () => {
-        if (this.state.visibleSideBar && this.isMobile()) {
+    // hide sidebar on small displays
+    hideSideBar = (event) => {
+        if (this.state.visibleSideBar && this.isMobile() && event.target.tagName !== 'INPUT') {
             this.toggleSideBar();
         }
     }
